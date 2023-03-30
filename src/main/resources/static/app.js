@@ -8,10 +8,10 @@ var app = (function () {
     }
     
     var stompClient = null;
-    var topic = "/topic/newpoint.";
+    var topic = "/newpoint.";
 
     var addPointToTopic = function(point){
-            stompClient.send(topic, {}, JSON.stringify(point));
+            stompClient.send("app" + topic, {}, JSON.stringify(point));
         };
 
     var addPointToCanvas = function (point) {        
@@ -40,7 +40,7 @@ var app = (function () {
         //subscribe to /topic/TOPICXX when connections succeed
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
-            stompClient.subscribe(topic, function (eventbody) {
+            stompClient.subscribe("/topic"+topic, function (eventbody) {
                 var theObject=JSON.parse(eventbody.body);
                 var pt=new Point(theObject.x,theObject.y);
                 addPointToCanvas(pt);

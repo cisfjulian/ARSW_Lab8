@@ -142,3 +142,28 @@ Para ver cómo manejar esto desde el manejador de eventos STOMP del servidor, re
 3. La aplicación propaga correctamente el evento de creación del polígono, cuando colaborativamente se insertan cuatro puntos.
 4. La aplicación propaga correctamente el evento de creación del polígono, cuando colaborativamente se insertan cuatro puntos, con 2 o más dibujos simultáneamente.
 5. En la implementación se tuvo en cuenta la naturaleza concurrente del ejercicio. Por ejemplo, si se mantiene el conjunto de los puntos recibidos en una colección, la misma debería ser de tipo concurrente (thread-safe).
+
+
+## Parte I.
+
+Al enviar el punto en una ventana del navegador esta se actualiza y manda la alerta de inmediato en la otra.
+
+![img.png](img/img.png)
+
+## Parte II.
+
+Al dibujar o hacer click dentro del canvas se pinta o se actualiza en el otro.
+
+![img_1.png](img/img_1.png)
+
+## Parte III.
+
+Tenemos la suscripcion a un topico especifico, el cual al conectarse, permite ver lo mismo en ambos.
+
+![img_2.png](img/img_2.png)
+
+## Parte IV
+
+Agregamos el controlador y se envian primero al "/app/newpoint.{numdibujo}"
+
+![img_3.png](img/img_3.png)
