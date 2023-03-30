@@ -8,6 +8,11 @@ var app = (function () {
     }
     
     var stompClient = null;
+    var topic = "/topic/newpoint.";
+
+    var addPointToTopic = function(point){
+            stompClient.send(topic, {}, JSON.stringify(point));
+        };
 
     var addPointToCanvas = function (point) {        
         var canvas = document.getElementById("canvas");
@@ -35,10 +40,10 @@ var app = (function () {
         //subscribe to /topic/TOPICXX when connections succeed
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
-            stompClient.subscribe('/topic/newpoint', function (eventbody) {
+            stompClient.subscribe(topic, function (eventbody) {
                 var theObject=JSON.parse(eventbody.body);
                 var pt=new Point(theObject.x,theObject.y);
-                addPointToCanvas(pt)
+                addPointToCanvas(pt);
             });
         });
     };
@@ -47,8 +52,10 @@ var app = (function () {
 
     return {
 
-        init: function () {
+        connect: function (nodibujo) {
             var can = document.getElementById("canvas");
+
+            topic = topic + nodibujo;
 
             //websocket connection
             connectAndSubscribe();
@@ -56,7 +63,7 @@ var app = (function () {
              can.addEventListener("pointerdown",function(evt){
                  var pt = getMousePosition(evt);
                  addPointToCanvas(pt);
-                 stompClient.send("/topic/newpoint", {}, JSON.stringify(pt));
+                 addPointToTopic(pt);
              })
             }
         },
@@ -67,8 +74,7 @@ var app = (function () {
             addPointToCanvas(pt);
 
             //publicar el evento
-            //enviando un objeto creado a partir de una clase
-            stompClient.send("/topic/newpoint", {}, JSON.stringify(pt));         },
+            addPointToTopic(pt);         },
 
         disconnect: function () {
             if (stompClient !== null) {
